@@ -14,6 +14,13 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   // initialed currency in the button
   String selectedCurrency = 'USD';
+  String rate = '?';
+
+  @override
+  void initState() {
+    getRate();
+    super.initState();
+  }
 
   DropdownButton<String> androidDropdown() {
     List<DropdownMenuItem<String>> dropdownItems = [];
@@ -31,15 +38,13 @@ class _PriceScreenState extends State<PriceScreen> {
         items: dropdownItems,
         onChanged: (value) {
           // change the value property
-          setState(() {
+          setState(() async {
             selectedCurrency = value!;
           });
         });
   }
 
   CupertinoPicker iosPicker() {
-    CoinData coinData = CoinData();
-    coinData.getCoinData();
     List<Text> pickerItems = [];
     for (String currency in currenciesList) {
       pickerItems.add(Text(currency));
@@ -53,6 +58,15 @@ class _PriceScreenState extends State<PriceScreen> {
       },
       children: pickerItems,
     );
+  }
+
+ void getRate() async {
+    CoinData coinData = CoinData();
+    // waiting to get the rate from the function from coin-data.dart
+    var rate = await coinData.getCoinData();
+    setState(() {
+      this.rate = rate;
+    });
   }
 
   // Widget getPicker() {
@@ -86,7 +100,7 @@ class _PriceScreenState extends State<PriceScreen> {
               child:  Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = ? $selectedCurrency',
+                  '1 BTC = $rate $selectedCurrency',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 20.0,

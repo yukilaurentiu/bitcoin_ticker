@@ -36,16 +36,22 @@ const List<String> cryptoList = [
 ];
 
 class CoinData {
-  Future<dynamic> getCoinData() async {
-    // var url = '$coinAppURL$apikey';
-    var url = coinAppURL;
+  // String url = coinAppURL;
+  String url = 'https://rest.coinapi.io/v1/exchangerate/BTC/USD?apikey=726AADBB-713C-496C-B191-5348537600B2';
+  Future<String> getCoinData() async {
+    return '6';
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      String data = response.body;
-      return jsonDecode(data);
-      // var decodedData = jsonDecode(data);
+       String data = response.body;
+       var decodedData = jsonDecode(data);
+       double originalRate = decodedData["rate"];
+       int roundRate = originalRate.round();
+       String rate = roundRate.toString().substring(0, 4);
+       print(rate);
+       return rate;
     } else {
-      print(response.statusCode);
+       print('ERROR: ${response.statusCode}');
+       return 'cat2';
     }
   }
 }
