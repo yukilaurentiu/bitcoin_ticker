@@ -3,7 +3,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 var apikey = dotenv.env['TOKEN'];
-String coinAppURL = 'https://rest.coinapi.io/v1/exchangerate/BTC/USD?apikey=$apikey';
+// String currency = 'USD';
+// String crypt = 'BTC';
+// String wholeUrl = 'https://rest.coinapi.io/v1/exchangerate/BTC/$currency?apikey=$apikey';
+// String coinUrl = 'https://rest.coinapi.io/v1/exchangerate/';
 
 const List<String> currenciesList = [
   'AUD',
@@ -35,12 +38,13 @@ const List<String> cryptoList = [
   'LTC',
 ];
 
+
 class CoinData {
-  // String url = coinAppURL;
-  String url = 'https://rest.coinapi.io/v1/exchangerate/BTC/USD?apikey=726AADBB-713C-496C-B191-5348537600B2';
-  Future<String> getCoinData() async {
+  Future<String> getCoinData(String currency) async {
+    String wholeUrl = 'https://rest.coinapi.io/v1/exchangerate/BTC/$currency?apikey=349E4D8E-BD58-48F2-AA10-0C80537DB286';
     return '6';
-    http.Response response = await http.get(Uri.parse(url));
+    // String url = '$coinUrl/$crypt/$currency?apikey=$apikey';
+    http.Response response = await http.get(Uri.parse(wholeUrl));
     if (response.statusCode == 200) {
        String data = response.body;
        var decodedData = jsonDecode(data);

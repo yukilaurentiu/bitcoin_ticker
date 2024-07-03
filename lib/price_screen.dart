@@ -18,7 +18,7 @@ class _PriceScreenState extends State<PriceScreen> {
 
   @override
   void initState() {
-    getRate();
+    getRate(selectedCurrency);
     super.initState();
   }
 
@@ -37,6 +37,7 @@ class _PriceScreenState extends State<PriceScreen> {
         value: selectedCurrency,
         items: dropdownItems,
         onChanged: (value) {
+
           // change the value property
           setState(() async {
             selectedCurrency = value!;
@@ -54,16 +55,18 @@ class _PriceScreenState extends State<PriceScreen> {
       onSelectedItemChanged: (value) {
         setState(() {
           selectedCurrency = currenciesList[value];
+          getRate(selectedCurrency);
+
         });
       },
       children: pickerItems,
     );
   }
 
- void getRate() async {
+ void getRate(String currency) async {
     CoinData coinData = CoinData();
     // waiting to get the rate from the function from coin-data.dart
-    var rate = await coinData.getCoinData();
+    var rate = await coinData.getCoinData(currency);
     setState(() {
       this.rate = rate;
     });
